@@ -8,6 +8,13 @@
       "when": 1741677106086,
       "tag": "0000_sticky_phantom_reporter",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1742113084152,
+      "tag": "0001_eager_spencer_smythe",
+      "breakpoints": true
     }
   ]
 }

@@ -30,6 +30,6 @@ export const CourseSectionRelationships = relations(
       fields: [CourseSectionTable.courseId],
       references: [CourseTable.id],
     }),
-    lesson: many(LessonTable),
+    lessons: many(LessonTable),
   })
 );
