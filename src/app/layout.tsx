@@ -16,7 +16,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="antialiased">
+        <body
+          className="antialiased"
+          data-new-gr-c-s-check-loaded="14.1229.0"
+          data-gr-ext-installed=""
+          cz-shortcut-listen="true"
+        >
           {children}
           <Toaster />
         </body>

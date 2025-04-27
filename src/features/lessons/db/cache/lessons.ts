@@ -14,7 +14,7 @@ export function getLessonCourseTag(courseId: string) {
   return getCourseTag("lessons", courseId);
 }
 
-export function revalidateUserCourseAccessCache({
+export function revalidateLessonCache({
   id,
   courseId,
 }: {
