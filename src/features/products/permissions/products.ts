@@ -1,4 +1,5 @@
-import { UserRole } from "@/drizzle/schema";
+import { ProductTable, UserRole } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
 export function canCreateProducts({
   role,
@@ -23,3 +24,5 @@ export function canDeleteProducts({
 }) {
   return role === "admin";
 }
+
+export const wherePublicProducts = eq(ProductTable.status, "public");

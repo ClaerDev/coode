@@ -18,7 +18,7 @@ export default function RootLayout({
       <html lang="en">
         <body
           className="antialiased"
-          data-new-gr-c-s-check-loaded="14.1229.0"
+          data-new-gr-c-s-check-loaded="14.1239.0"
           data-gr-ext-installed=""
           cz-shortcut-listen="true"
         >

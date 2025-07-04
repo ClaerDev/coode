@@ -1,132 +1,64 @@
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { eq, asc } from "drizzle-orm";
-import { CourseSectionTable, CourseTable, LessonTable } from "@/drizzle/schema";
-import { getCourseSectionCourseTag } from "@/features/courseSections/db/cache";
-import { getLessonCourseTag } from "@/features/lessons/db/cache/lessons";
+import { CourseTable, ProductTable } from "@/drizzle/schema";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
-import { getCourseIdTag } from "@/features/courses/db/cache/courses";
+import { getCourseGlobalTag } from "@/features/courses/db/cache/courses";
 import { db } from "@/drizzle/db";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CourseForm } from "@/features/courses/components/CourseForm";
-import { SectionFormDialog } from "@/features/courseSections/components/SectionFormDialog";
-import { DialogTrigger } from "@/components/ui/dialog";
-import { EyeClosedIcon, PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SortableSectionList } from "@/features/courseSections/components/SortableSectionList";
-import { cn } from "@/lib/utils";
-import { LessonFormDialog } from "@/features/lessons/components/LessonFormDialog";
-import { SortableLessonList } from "@/features/lessons/components/SortableLessonList";
+import { ProductForm } from "@/features/products/components/ProductForm";
+import { getProductIdTag } from "@/features/products/db/cache";
 
-export default async function EditCoursePage({
+export default async function EditProductPage({
   params,
 }: {
-  params: Promise<{ courseId: string }>;
+  params: Promise<{ productId: string }>;
 }) {
-  const { courseId } = await params;
-  const course = await getCourse(courseId);
+  const { productId } = await params;
+  const product = await getProduct(productId);
 
-  if (course == null) return notFound();
+  if (product == null) return notFound();
 
   return (
     <div className="container my-6">
-      <PageHeader title={course.name} />
-      <Tabs defaultValue="lessons">
-        <TabsList>
-          <TabsTrigger value="lessons">Lessons</TabsTrigger>
-          <TabsTrigger value="details">Details</TabsTrigger>
-        </TabsList>
-        <TabsContent value="lessons" className="flex flex-col gap-2">
-          <Card>
-            <CardHeader className="flex items-center flex-row justify-between">
-              <CardTitle>Sections</CardTitle>
-              <SectionFormDialog courseId={course.id}>
-                <DialogTrigger asChild>
-                  <Button variant="outline">
-                    <PlusIcon /> New Section
-                  </Button>
-                </DialogTrigger>
-              </SectionFormDialog>
-            </CardHeader>
-            <CardContent>
-              <SortableSectionList
-                courseId={courseId}
-                sections={course.courseSections}
-              />
-            </CardContent>
-          </Card>
-          <hr className="my-2"></hr>
-          {course.courseSections.map((section) => (
-            <Card key={section.id}>
-              <CardHeader className="flex items-center flex-row justify-between gap-4">
-                <CardTitle
-                  className={cn(
-                    "flex items-center gap-2",
-                    section.status === "private" && "text-muted-foreground"
-                  )}
-                >
-                  {section.status === "private" && <EyeClosedIcon />}{" "}
-                  {section.name}
-                </CardTitle>
-                <LessonFormDialog defaultSectionId={section.id} sections={course.courseSections}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline">
-                      <PlusIcon /> New Lesson
-                    </Button>
-                  </DialogTrigger>
-                </LessonFormDialog>
-              </CardHeader>
-              <CardContent>
-                <SortableLessonList
-                  sections={course.courseSections}
-                  lessons={section.lessons}
-                />
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-        <TabsContent value="details">
-          <Card>
-            <CardHeader>
-              <CourseForm course={course} />
-            </CardHeader>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <PageHeader title="New Product" />
+      <ProductForm
+        product={{
+          ...product,
+          courseIds: product.courseProducts.map((c) => c.courseId),
+        }}
+        courses={await getCourses()}
+      />
     </div>
   );
 }
 
-async function getCourse(id: string) {
+async function getCourses() {
   "use cache";
-  cacheTag(
-    getCourseIdTag(id),
-    getCourseSectionCourseTag(id),
-    getLessonCourseTag(id)
-  );
+  cacheTag(getCourseGlobalTag());
 
-  return db.query.CourseTable.findFirst({
-    columns: { id: true, name: true, description: true },
-    where: eq(CourseTable.id, id),
-    with: {
-      courseSections: {
-        orderBy: asc(CourseSectionTable.order),
-        columns: { id: true, status: true, name: true },
-        with: {
-          lessons: {
-            orderBy: asc(LessonTable.order),
-            columns: {
-              id: true,
-              name: true,
-              status: true,
-              description: true,
-              youtubeVideoId: true,
-              sectionId: true,
-            },
-          },
-        },
-      },
+  return db.query.CourseTable.findMany({
+    orderBy: asc(CourseTable.name),
+    columns: {
+      id: true,
+      name: true,
     },
+  });
+}
+
+async function getProduct(id: string) {
+  "use cache";
+  cacheTag(getProductIdTag(id));
+
+  return db.query.ProductTable.findFirst({
+    columns: {
+      id: true,
+      name: true,
+      status: true,
+      description: true,
+      priceInDollars: true,
+      imageUrl: true,
+    },
+    where: eq(ProductTable.id, id),
+    with: { courseProducts: { columns: { courseId: true } } },
   });
 }
