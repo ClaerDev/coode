@@ -1,31 +1,34 @@
-import { eq } from "drizzle-orm"
+import { and, eq, isNull } from "drizzle-orm"
 import { db } from "@/drizzle/db"
 import { revalidateProductCache } from "./cache"
 import {
   CourseProductTable,
   ProductTable,
+  PurchaseTable,
 } from "@/drizzle/schema"
+import { cacheTag } from "next/dist/server/use-cache/cache-tag"
+import { getPurchaseUserTag } from "@/features/purchase/db/cache"
 
-// export async function userOwnsProduct({
-//   userId,
-//   productId,
-// }: {
-//   userId: string
-//   productId: string
-// }) {
-//   "use cache"
-//   cacheTag(getPurchaseUserTag(userId))
+export async function userOwnsProduct({
+  userId,
+  productId,
+}: {
+  userId: string
+  productId: string
+}) {
+  "use cache"
+  cacheTag(getPurchaseUserTag(userId))
 
-//   const existingPurchase = await db.query.PurchaseTable.findFirst({
-//     where: and(
-//       eq(PurchaseTable.productId, productId),
-//       eq(PurchaseTable.userId, userId),
-//       isNull(PurchaseTable.refundedAt)
-//     ),
-//   })
+  const existingPurchase = await db.query.PurchaseTable.findFirst({
+    where: and(
+      eq(PurchaseTable.productId, productId),
+      eq(PurchaseTable.userId, userId),
+      isNull(PurchaseTable.refundedAt)
+    ),
+  })
 
-//   return existingPurchase != null
-// }
+  return existingPurchase != null
+}
 
 export async function insertProduct(
   data: typeof ProductTable.$inferInsert & { courseIds: string[] }
