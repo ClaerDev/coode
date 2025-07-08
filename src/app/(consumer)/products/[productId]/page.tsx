@@ -68,7 +68,6 @@ export default async function ProductPage({
               }
             >
               <Price price={product.priceInDollars} />
-              <h1 className="text-4xl font-semibold">{product.name}</h1>
             </Suspense>
             <h1 className="font-semibold text-4xl">{product.name}</h1>
             <div className="text-muted-foreground">
@@ -181,16 +180,19 @@ async function PurchaseButton({ productId }: { productId: string }) {
 async function Price({ price }: { price: number }) {
   const coupon = await getUserCoupon();
   if (price === 0 || coupon == null) {
-    return <div className="text-xl">{formatPrice(price)}</div>;
+    return <div className="text-xl">{formatPrice(price)}</div>
   }
+
   return (
     <div className="flex gap-2 items-baseline">
-      <div className="line-through text-xs opacty-50">{formatPrice(price)}</div>
+      <div className="line-through text-sm opacity-50">
+        {formatPrice(price)}
+      </div>
       <div className="text-xl">
         {formatPrice(price * (1 - coupon.discountPercentage))}
       </div>
     </div>
-  );
+  )
 }
 
 async function getPublicProduct(id: string) {
