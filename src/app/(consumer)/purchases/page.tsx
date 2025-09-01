@@ -6,7 +6,7 @@ import { PurchaseTable } from "@/drizzle/schema";
 import {
   UserPurchaseTable,
   UserPurchaseTableSkeleton,
-} from "@/features/purchase/components/UserPurchaseTableSkeleton";
+} from "@/features/purchase/components/UserPurchaseTable";
 import { getPurchaseUserTag } from "@/features/purchase/db/cache";
 import { desc, eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
