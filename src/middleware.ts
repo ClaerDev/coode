@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { env } from "process";
+import { env } from "@/data/env/server";
 import arcjet, { detectBot, shield, slidingWindow } from "@arcjet/next";
 import { setUserCountryHeader } from "./lib/userCountryHeader";
 import { NextResponse } from "next/server";
@@ -44,7 +44,7 @@ export default clerkMiddleware(async (auth, req) => {
 
   if (isAdminRoute(req)) {
     const user = await auth.protect();
-    if (user.sessionClaims.rolen !== "admin") {
+    if (user.sessionClaims.role !== "admin") {
       return new NextResponse(null, { status: 404 })
     }
   }

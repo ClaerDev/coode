@@ -41,7 +41,8 @@ export async function POST(request: NextRequest) {
     case "checkout.session.async_payment_succeeded": {
       try {
         await processStripeCheckout(event.data.object)
-      } catch {
+      } catch (error) {
+        console.error("Webhook processing failed:", error)
         return new Response(null, { status: 500 })
       }
     }
@@ -59,14 +60,14 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
 
   const [product, user] = await Promise.all([
     getProduct(productId),
-    await getUser(userId),
+    getUser(userId),
   ])
 
   if (product == null) throw new Error("Product not found")
   if (user == null) throw new Error("User not found")
 
   const courseIds = product.courseProducts.map(cp => cp.courseId)
-  db.transaction(async trx => {
+  await db.transaction(async trx => {
     try {
       await addUserCourseAccess({ userId: user.id, courseIds }, trx)
       await insertPurchase(
@@ -81,6 +82,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
         trx
       )
     } catch (error) {
+      console.error("Database transaction failed:", error)
       trx.rollback()
       throw error
     }
@@ -105,7 +107,7 @@ function getProduct(id: string) {
   })
 }
 
-function getUser(id: string) {
+async function getUser(id: string) {
   return db.query.UserTable.findFirst({
     columns: { id: true },
     where: eq(UserTable.id, id),
