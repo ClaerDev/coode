@@ -26,7 +26,7 @@ import {
 import { lessonSchema } from "../schemas/lessons";
 import { Textarea } from "@/components/ui/textarea";
 import { createLesson, updateLesson } from "../actions/lessons";
-import { YoutubeVideoPlayer } from "./YoutubeVideoPlayer";
+import { YouTubeVideoPlayer } from "./YoutubeVideoPlayer";
 
 export function LessonForm({
   sections,
@@ -197,7 +197,7 @@ export function LessonForm({
         </div>
         {videoId && (
           <div className="aspect-video">
-            <YoutubeVideoPlayer videoId={videoId} />
+            <YouTubeVideoPlayer videoId={videoId} />
           </div>
         )}
       </form>
