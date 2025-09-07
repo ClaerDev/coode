@@ -12,33 +12,39 @@ export default function ConsumerLayout({
     <>
       <Navbar />
       {children}
+      <Footer />
     </>
   );
 }
 function Navbar() {
   return (
-    <header className="flex h-12 shadow bg-background z-10">
+    <header className="flex h-16 shadow bg-background z-10">
       <nav className="flex gap-4 container">
         <Link
           className="mr-auto text-lg hover:underline flex items-center px-2"
           href="/"
         >
-          Alphion Platform
+          <img src="/images/logo.png" alt="Coode Logo" width={45} height={45} />
+          <span className="text-2xl font-semibold pl-0.5">Coode</span>
         </Link>
         <Suspense>
           <SignedIn>
             <AdminLink />
             <Link
-              className="hover:bg-accent/10 flex items-center px-2"
+              className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
               href="/courses"
             >
-              My Courses
+              <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">
+                My Courses
+              </span>
             </Link>
             <Link
-              className="hover:bg-accent/10 flex items-center px-2"
+              className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
               href="/purchases"
             >
-              Purchase History
+              <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">
+                Purchased History
+              </span>
             </Link>
             <div className="size-8 self-center">
               <UserButton
@@ -53,7 +59,7 @@ function Navbar() {
         </Suspense>
         <Suspense>
           <SignedOut>
-            <Button className="self-center" asChild>
+            <Button className="self-center rounded-3xl w-25 h-10" asChild>
               <SignInButton>Sign In</SignInButton>
             </Button>
           </SignedOut>
@@ -68,8 +74,25 @@ async function AdminLink() {
   if (!canAccessAdminPages(user)) return null;
 
   return (
-    <Link className="hover:bg-accent/10 flex items-center px-2" href="/admin">
-      Admin
+    <Link
+      className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
+      href="/admin"
+    >
+      <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">
+        Admin
+      </span>
     </Link>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-gray-50 border-t mt-auto">
+      <div className="container mx-auto px-4 py-4">
+        <div className="text-center text-sm text-gray-600">
+          ©2025 All rights reserved.
+        </div>
+      </div>
+    </footer>
   );
 }

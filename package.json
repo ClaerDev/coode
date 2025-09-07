@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@arcjet/next": "^1.0.0-beta.8",
@@ -31,6 +32,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "dotenv": "^17.2.2",
     "drizzle-orm": "^0.40.0",
     "lucide-react": "^0.479.0",
     "next": "15.2.1",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@faker-js/faker": "^10.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -61,6 +64,7 @@
     "eslint-config-next": "15.2.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.12",
+    "tsx": "^4.20.5",
     "typescript": "^5"
   }
 }

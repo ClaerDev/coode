@@ -9,6 +9,7 @@ export default function AdminLayout({
     <>
       <Navbar />
       {children}
+      <Footer />
     </>
   );
 }
@@ -21,27 +22,33 @@ function Navbar() {
             className="mr-auto text-lg hover:underline flex items-center px-2"
             href="/"
           >
-            Alphion Platform
+            <img
+              src="/images/logo.png"
+              alt="Coode Logo"
+              width={45}
+              height={45}
+            />
+            <span className="text-2xl font-semibold pl-0.5">Coode</span>
           </Link>
-          <Badge>Admin</Badge>
+          <Badge className="px-2">Admin</Badge>
         </div>
         <Link
-          className="hover:bg-accent/10 flex items-center px-2"
+          className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
           href="/admin/courses"
         >
-          Courses
+          <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">Courses</span>
         </Link>
         <Link
-          className="hover:bg-accent/10 flex items-center px-2"
+          className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
           href="/admin/products"
         >
-          Products
+           <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">Products</span>
         </Link>
         <Link
-          className="hover:bg-accent/10 flex items-center px-2"
+          className="group hover:text-gray-900 text-gray-600 flex items-center px-2"
           href="/admin/sales"
         >
-          Sales
+           <span className="group-hover:border-b group-hover:border-gray-900 text-sm font-semibold">Sales</span>
         </Link>
         <div className="size-8 self-center">
           <UserButton
@@ -54,5 +61,17 @@ function Navbar() {
         </div>
       </nav>
     </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-gray-50 border-t mt-auto">
+      <div className="container mx-auto px-4 py-4">
+        <div className="text-center text-sm text-gray-600">
+          ©2025 All rights reserved.
+        </div>
+      </div>
+    </footer>
   );
 }
