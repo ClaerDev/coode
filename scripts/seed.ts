@@ -93,10 +93,29 @@ Perfect for professionals, students, and anyone looking to advance their career 
 
     const basePrice = faker.helpers.arrayElement([29, 39, 49, 59, 79, 99, 129, 149, 199, 249, 299]);
     
+    // Use valid Unsplash collection images for programming/tech topics
+    const techImages = [
+      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1542903660-eedba2cda473?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=600&fit=crop'
+    ];
+    
     products.push({
       name: productName,
       description: description,
-      imageUrl: `https://images.unsplash.com/photo-${faker.number.int({ min: 1500000000000, max: 1700000000000 })}?w=800&h=600&fit=crop&crop=entropy&auto=format&q=80`,
+      imageUrl: faker.helpers.arrayElement(techImages),
       priceInDollars: basePrice,
       status: faker.helpers.arrayElement(['public', 'public', 'public', 'private']) as 'public' | 'private' // 75% public, 25% private
     });
