@@ -12,6 +12,18 @@ import { getUserCoupon } from "@/lib/userCountryHeader";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { ProductTag } from "@/drizzle/schema";
+
+const getTagColor = (tag: ProductTag) => {
+  const colors = {
+    recommended: "bg-blue-100 text-blue-800 border-blue-200",
+    popular: "bg-green-100 text-green-800 border-green-200",
+    new: "bg-purple-100 text-purple-800 border-purple-200",
+    bestseller: "bg-orange-100 text-orange-800 border-orange-200",
+    featured: "bg-red-100 text-red-800 border-red-200",
+  };
+  return colors[tag] || "bg-gray-100 text-gray-800 border-gray-200";
+};
 
 export function ProductCard({
   id,
@@ -19,19 +31,43 @@ export function ProductCard({
   description,
   priceInDollars,
   imageUrl,
+  tags = [],
 }: {
   id: string;
   name: string;
   description: string;
   priceInDollars: number;
   imageUrl: string;
+  tags?: ProductTag[];
 }) {
   return (
-    <Card className="overflow-hidden flex flex-col w-full max-w-[500px] mx-auto">
-      <div className="relative aspect-video w-full">
-        <Image src={imageUrl} alt={name} fill className="object-cover" />
+    <Card
+      className="group overflow-visible flex flex-col w-full max-w-[500px] mx-auto shadow-2xl transition duration-700 
+            hover:border-[#000000] hover:[transform:perspective(1000px)_scale(0.97)_translateZ(10px)_rotateY(-10deg)]"
+    >
+      <div
+        className="relative aspect-video w-full transition-transform duration-700 rounded-xl
+        group-hover:[transform:perspective(1000px)_translateZ(5px)_scale(1.01)_translateX(-20px)_translateY(-15px)] group-hover:opacity-90
+      "
+      >
+        <Image
+          src={imageUrl}
+          alt={name}
+          fill
+          className="object-cover rounded-xl preserve-3d"
+        />
       </div>
-      <CardHeader className="space-y-0">
+      <CardHeader className="space-y-2">
+        <div className="flex flex-wrap gap-1 mb-2">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className={`px-2 py-1 rounded-full text-xs font-medium border ${getTagColor(tag)}`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
         <CardDescription>
           <Suspense fallback={formatPrice(priceInDollars)}>
             <Price price={priceInDollars} />
@@ -40,10 +76,15 @@ export function ProductCard({
         <CardTitle className="text-xl">{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-3">{description}</p>
+        <p className="line-clamp-4">{description}</p>
       </CardContent>
       <CardFooter className="mt-auto">
-        <Button className="w-full text-md py-y" asChild>
+        <Button size="lg"
+          className="w-full text-md transition-transform duration-700
+        group-hover:[transform:perspective(1000px)_translateZ(5px)_scale(1.01)_translateX(-15px)_translateY(5px)]
+      "
+          asChild
+        >
           <Link href={`/products/${id}`}>View Course</Link>
         </Button>
       </CardFooter>
@@ -58,10 +99,10 @@ async function Price({ price }: { price: number }) {
   }
   return (
     <div className="flex gap-2 items-baseline">
-      <div className="line-through text-xs opacity-50">
+      <div className="line-through opacity-50 italic text-[#000] text-xs font-semibold">
         {formatPrice(price)}
       </div>
-      <div>{formatPrice(price * (1 - coupon.discountPercentage))}</div>
+      <div className="font-bold text-sm text-[#000000]">{formatPrice(price * (1 - coupon.discountPercentage))}</div>
     </div>
   );
 }

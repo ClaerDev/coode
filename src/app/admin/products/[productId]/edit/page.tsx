@@ -25,6 +25,7 @@ export default async function EditProductPage({
         product={{
           ...product,
           courseIds: product.courseProducts.map((c) => c.courseId),
+          tags: product.tags as any,
         }}
         courses={await getCourses()}
       />
@@ -57,6 +58,7 @@ async function getProduct(id: string) {
       description: true,
       priceInDollars: true,
       imageUrl: true,
+      tags: true,
     },
     where: eq(ProductTable.id, id),
     with: { courseProducts: { columns: { courseId: true } } },

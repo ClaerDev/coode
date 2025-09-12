@@ -1,4 +1,4 @@
-import { productStatuses } from "@/drizzle/schema"
+import { productStatuses, productTags } from "@/drizzle/schema"
 import { z } from "zod"
 
 export const productSchema = z.object({
@@ -10,5 +10,6 @@ export const productSchema = z.object({
     z.string().startsWith("/", "Invalid url"),
   ]),
   status: z.enum(productStatuses),
+  tags: z.array(z.enum(productTags)).default([]),
   courseIds: z.array(z.string()).min(1, "At least one course is required"),
 })

@@ -7,6 +7,9 @@ export const productStatuses = ["public", "private"] as const;
 export type ProductStatus = (typeof productStatuses)[number];
 export const productStatusEnum = pgEnum("product_status", productStatuses);
 
+export const productTags = ["recommended", "popular", "new", "bestseller", "featured"] as const;
+export type ProductTag = (typeof productTags)[number];
+
 export const ProductTable = pgTable("products", {
   id,
   name: text().notNull(),
@@ -14,6 +17,7 @@ export const ProductTable = pgTable("products", {
   imageUrl: text().notNull(),
   priceInDollars: integer().notNull(),
   status: productStatusEnum().notNull().default("private"),
+  tags: text().array().notNull().default("{}"),
   createdAt,
   updatedAt,
 });

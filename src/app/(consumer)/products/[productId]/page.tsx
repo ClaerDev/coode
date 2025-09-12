@@ -58,7 +58,7 @@ export default async function ProductPage({
   return (
     <div className="container my-6">
       <div className="flex gap-16 items-center justify-between">
-        <div className="flex gap-67 flex-col items-start">
+        <div className="flex gap-6 flex-col items-start">
           <div className="flex flex-col gap-2">
             <Suspense
               fallback={
@@ -87,12 +87,13 @@ export default async function ProductPage({
             </Suspense>
           </div>
         </div>
-        <div className="relative aspect-video max-w-lg flex-grow">
+        <div className="relative aspect-video max-w-lg flex-shrink-0 w-96 h-56">
           <Image
             src={product.imageUrl}
             fill
             alt={product.name}
-            className="object-contain rounded-xl"
+            className="object-cover rounded-xl"
+            sizes="(max-width: 768px) 100vw, 400px"
           />
         </div>
       </div>

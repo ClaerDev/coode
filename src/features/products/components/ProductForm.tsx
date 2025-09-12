@@ -16,7 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { productSchema } from "../schema/products";
-import { ProductStatus, productStatuses } from "@/drizzle/schema";
+import {
+  ProductStatus,
+  productStatuses,
+  ProductTag,
+  productTags,
+} from "@/drizzle/schema";
 import { createProduct, updateProduct } from "../actions/products";
 import {
   Select,
@@ -39,6 +44,7 @@ export function ProductForm({
     priceInDollars: number;
     imageUrl: string;
     status: ProductStatus;
+    tags: ProductTag[];
     courseIds: string[];
   };
   courses: {
@@ -55,6 +61,7 @@ export function ProductForm({
       imageUrl: "",
       priceInDollars: 0,
       status: "private",
+      tags: [],
     },
   });
 
@@ -147,7 +154,7 @@ export function ProductForm({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger  className="w-full">
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                   </FormControl>
@@ -163,28 +170,49 @@ export function ProductForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="courseIds"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Included Courses</FormLabel>
+                <FormControl>
+                  <MultiSelect
+                    selectPlaceholder="Select courses"
+                    searchPlaceholder="Search courses"
+                    options={courses}
+                    getLabel={(c) => c.name}
+                    getValue={(c) => c.id}
+                    selectedValues={field.value}
+                    onSelectedValuesChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tags</FormLabel>
+                <FormControl>
+                  <MultiSelect
+                    selectPlaceholder="Select tags"
+                    searchPlaceholder="Search tags"
+                    options={productTags.map((tag) => ({ id: tag, name: tag }))}
+                    getLabel={(tag) => tag.name}
+                    getValue={(tag) => tag.id}
+                    selectedValues={field.value}
+                    onSelectedValuesChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <FormField
-          control={form.control}
-          name="courseIds"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Included Courses</FormLabel>
-              <FormControl>
-                <MultiSelect
-                  selectPlaceholder="Select courses"
-                  searchPlaceholder="Search courses"
-                  options={courses}
-                  getLabel={(c) => c.name}
-                  getValue={(c) => c.id}
-                  selectedValues={field.value}
-                  onSelectedValuesChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="description"
