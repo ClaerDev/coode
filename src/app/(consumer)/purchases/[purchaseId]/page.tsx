@@ -61,7 +61,7 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
     <>
       <PageHeader title={purchase.productDetails.name}>
         {receiptUrl && (
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="text-black hover:bg-black hover:text-white transition-colors">
             <Link target="_blank" href={receiptUrl}>
               View Receipt
             </Link>
@@ -69,14 +69,14 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
         )}
       </PageHeader>
 
-      <Card>
+      <Card className="pt-5">
         <CardHeader className="pb-4">
           <div className="flex justify-between items-start gap-4">
             <div className="flex flex-col gap-1">
               <CardTitle>Receipt</CardTitle>
               <CardDescription>ID: {purchaseId}</CardDescription>
             </div>
-            <Badge className="text-base">
+            <Badge className="text-sm font-medium px-3 py-1.5">
               {purchase.refundedAt ? "Refunded" : "Paid"}
             </Badge>
           </div>
@@ -96,7 +96,7 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
           </div>
           <div>
             <label className="text-sm text-muted-foreground">Seller</label>
-            <div>Web Dev Simplified</div>
+            <div>Coode</div>
           </div>
         </CardContent>
         <CardFooter className="grid grid-cols-2 gap-y-4 gap-x-8 border-t pt-4">

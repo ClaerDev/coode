@@ -1,11 +1,11 @@
-import { getCurrentUser } from "@/app/services/clerk"
-import { PageHeader } from "@/components/PageHeader"
+import { getCurrentUser } from "@/app/services/clerk";
+import { PageHeader } from "@/components/PageHeader";
 import {
   SkeletonArray,
   SkeletonButton,
   SkeletonText,
-} from "@/components/Skeleton"
-import { Button } from "@/components/ui/button"
+} from "@/components/Skeleton";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,27 +13,28 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { db } from "@/drizzle/db"
+} from "@/components/ui/card";
+import { db } from "@/drizzle/db";
 import {
   CourseSectionTable,
   CourseTable,
   LessonTable,
   UserCourseAccessTable,
   UserLessonCompleteTable,
-} from "@/drizzle/schema"
-import { getCourseIdTag } from "@/features/courses/db/cache/courses"
-import { getUserCourseAccessUserTag } from "@/features/courses/db/cache/userCourseAccess"
-import { getCourseSectionCourseTag } from "@/features/courseSections/db/cache"
-import { wherePublicCourseSections } from "@/features/courseSections/permissions/sections"
-import { getLessonCourseTag } from "@/features/lessons/db/cache/lessons"
-import { getUserLessonCompleteUserTag } from "@/features/lessons/db/cache/userLessonComplete"
-import { wherePublicLessons } from "@/features/lessons/permissions/lessons"
-import { formatPlural } from "@/lib/formatters"
-import { and, countDistinct, eq } from "drizzle-orm"
-import { cacheTag } from "next/dist/server/use-cache/cache-tag"
-import Link from "next/link"
-import { Suspense } from "react"
+} from "@/drizzle/schema";
+import { getCourseIdTag } from "@/features/courses/db/cache/courses";
+import { getUserCourseAccessUserTag } from "@/features/courses/db/cache/userCourseAccess";
+import { getCourseSectionCourseTag } from "@/features/courseSections/db/cache";
+import { wherePublicCourseSections } from "@/features/courseSections/permissions/sections";
+import { getLessonCourseTag } from "@/features/lessons/db/cache/lessons";
+import { getUserLessonCompleteUserTag } from "@/features/lessons/db/cache/userLessonComplete";
+import { wherePublicLessons } from "@/features/lessons/permissions/lessons";
+import { formatPlural } from "@/lib/formatters";
+import { and, countDistinct, eq } from "drizzle-orm";
+import { BookOpen } from "lucide-react";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export default function CoursesPage() {
   return (
@@ -51,28 +52,37 @@ export default function CoursesPage() {
         </Suspense>
       </div>
     </div>
-  )
+  );
 }
 
 async function CourseGrid() {
-  const { userId, redirectToSignIn } = await getCurrentUser()
-  if (userId == null) return redirectToSignIn()
+  const { userId, redirectToSignIn } = await getCurrentUser();
+  if (userId == null) return redirectToSignIn();
 
-  const courses = await getUserCourses(userId)
+  const courses = await getUserCourses(userId);
 
   if (courses.length === 0) {
     return (
-      <div className="flex flex-col gap-2 items-start">
-        You have no courses yet
-        <Button asChild size="lg">
+      <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-muted-foreground/30 bg-muted/20 p-8 text-center w-full mx-auto">
+        <BookOpen className="h-12 w-12 text-muted-foreground/70" />
+        <p className="text-base md:text-lg font-medium text-muted-foreground">
+          You don’t have any courses yet
+        </p>
+        <Button
+          asChild
+          size="lg"
+          className="px-6 py-2 rounded-lg font-semibold shadow-sm bg-black text-white 
+                   hover:bg-white hover:text-black hover:border hover:border-black 
+                   transition-all duration-300"
+        >
           <Link href="/">Browse Courses</Link>
         </Button>
       </div>
-    )
+    );
   }
 
-  return courses.map(course => (
-    <Card key={course.id} className="overflow-hidden flex flex-col">
+  return courses.map((course) => (
+    <Card key={course.id} className="overflow-hidden flex flex-col pt-8">
       <CardHeader>
         <CardTitle>{course.name}</CardTitle>
         <CardDescription>
@@ -92,18 +102,21 @@ async function CourseGrid() {
       </CardContent>
       <div className="flex-grow" />
       <CardFooter>
-        <Button asChild>
+        <Button
+          asChild
+          className="text-white hover:bg-white hover:border-2 hover:text-black transition-colors"
+        >
           <Link href={`/courses/${course.id}`}>View Course</Link>
         </Button>
       </CardFooter>
       <div
-        className="bg-accent h-2 -mt-2"
+        className="bg-black h-2 -mt-2"
         style={{
           width: `${(course.lessonsComplete / course.lessonsCount) * 100}%`,
         }}
       />
     </Card>
-  ))
+  ));
 }
 
 function SkeletonCourseCard() {
@@ -124,15 +137,15 @@ function SkeletonCourseCard() {
         <SkeletonButton />
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 async function getUserCourses(userId: string) {
-  "use cache"
+  "use cache";
   cacheTag(
     getUserCourseAccessUserTag(userId),
     getUserLessonCompleteUserTag(userId)
-  )
+  );
 
   const courses = await db
     .select({
@@ -170,15 +183,15 @@ async function getUserCourses(userId: string) {
       )
     )
     .orderBy(CourseTable.name)
-    .groupBy(CourseTable.id)
+    .groupBy(CourseTable.id);
 
-  courses.forEach(course => {
+  courses.forEach((course) => {
     cacheTag(
       getCourseIdTag(course.id),
       getCourseSectionCourseTag(course.id),
       getLessonCourseTag(course.id)
-    )
-  })
+    );
+  });
 
-  return courses
+  return courses;
 }

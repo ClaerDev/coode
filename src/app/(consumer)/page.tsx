@@ -1,27 +1,48 @@
 import { db } from "@/drizzle/db";
 import { ProductTable, ProductTag } from "@/drizzle/schema";
-import { ProductCard } from "@/features/products/components/ProductCard";
 import { getProductGlobalTag } from "@/features/products/db/cache";
 import { wherePublicProducts } from "@/features/products/permissions/products";
-import { asc } from "drizzle-orm";
+import { asc, desc } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { ProductGrid } from "@/components/ProductGrid";
+import { getUserCoupon } from "@/lib/userCountryHeader";
 
-export default async function HomPage() {
+export type SortOption = "latest" | "oldest" | "price-low" | "price-high";
+
+export default async function HomePage() {
   const products = await getPublicProducts();
+  const coupon = await getUserCoupon();
+  
   return (
     <div className="container my-10">
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} tags={product.tags as ProductTag[]} />
-        ))}
-      </div>
+      <ProductGrid 
+        products={products.map(product => ({ ...product, tags: product.tags as ProductTag[] }))} 
+        coupon={coupon}
+      />
     </div>
   );
 }
 
-async function getPublicProducts() {
+async function getPublicProducts(sortBy: SortOption = "latest") {
   "use cache";
   cacheTag(getProductGlobalTag());
+
+  let orderBy;
+  switch (sortBy) {
+    case "oldest":
+      orderBy = asc(ProductTable.createdAt);
+      break;
+    case "price-low":
+      orderBy = asc(ProductTable.priceInDollars);
+      break;
+    case "price-high":
+      orderBy = desc(ProductTable.priceInDollars);
+      break;
+    case "latest":
+    default:
+      orderBy = desc(ProductTable.createdAt);
+      break;
+  }
 
   return db.query.ProductTable.findMany({
     columns: {
@@ -31,8 +52,9 @@ async function getPublicProducts() {
       priceInDollars: true,
       imageUrl: true,
       tags: true,
+      createdAt: true,
     },
     where: wherePublicProducts,
-    orderBy: asc(ProductTable.name),
+    orderBy,
   });
 }

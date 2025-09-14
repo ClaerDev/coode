@@ -9,7 +9,7 @@ It was created for **learning and portfolio purposes** to practice building a mo
 ## 🚀 Features
 - User authentication with Clerk  
 - Course browsing and purchase (Stripe integration)  
-- Admin dashboard for courses and products  
+- Admin dashboard for courses, products and sales
 - Caching and middleware setup  
 - Responsive design with Shadcn + Tailwind CSS  
 

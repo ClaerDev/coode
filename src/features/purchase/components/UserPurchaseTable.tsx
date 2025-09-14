@@ -42,7 +42,7 @@ export function UserPurchaseTable({
       </TableHeader>
       <TableBody>
         {purchases.map(purchase => (
-          <TableRow key={purchase.id}>
+          <TableRow key={purchase.id} className="hover:bg-gray-100">
             <TableCell>
               <div className="flex items-center gap-4">
                 <Image
@@ -70,7 +70,7 @@ export function UserPurchaseTable({
               )}
             </TableCell>
             <TableCell>
-              <Button variant="outline" asChild>
+              <Button variant="outline" asChild className="text-black hover:bg-black hover:text-white transition-colors">
                 <Link href={`/purchases/${purchase.id}`}>Details</Link>
               </Button>
             </TableCell>

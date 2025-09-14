@@ -8,10 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatPrice } from "@/lib/formatters";
-import { getUserCoupon } from "@/lib/userCountryHeader";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import { ProductTag } from "@/drizzle/schema";
 
 const getTagColor = (tag: ProductTag) => {
@@ -32,6 +30,7 @@ export function ProductCard({
   priceInDollars,
   imageUrl,
   tags = [],
+  coupon,
 }: {
   id: string;
   name: string;
@@ -39,6 +38,7 @@ export function ProductCard({
   priceInDollars: number;
   imageUrl: string;
   tags?: ProductTag[];
+  coupon?: { discountPercentage: number } | null;
 }) {
   return (
     <Card
@@ -69,9 +69,7 @@ export function ProductCard({
           ))}
         </div>
         <CardDescription>
-          <Suspense fallback={formatPrice(priceInDollars)}>
-            <Price price={priceInDollars} />
-          </Suspense>
+          <Price price={priceInDollars} coupon={coupon} />
         </CardDescription>
         <CardTitle className="text-xl">{name}</CardTitle>
       </CardHeader>
@@ -92,8 +90,7 @@ export function ProductCard({
   );
 }
 
-async function Price({ price }: { price: number }) {
-  const coupon = await getUserCoupon();
+function Price({ price, coupon }: { price: number; coupon?: { discountPercentage: number } | null }) {
   if (price === 0 || coupon == null) {
     return formatPrice(price);
   }

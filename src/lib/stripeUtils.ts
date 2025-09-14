@@ -61,7 +61,8 @@ export function createMockStripeSession(sessionId: string, pricePaidInCents: num
       amount_shipping: 0,
       amount_tax: 0,
       breakdown: {
-        discounts: []
+        discounts: [],
+        taxes: []
       }
     },
     amount_total: pricePaidInCents,
@@ -70,7 +71,7 @@ export function createMockStripeSession(sessionId: string, pricePaidInCents: num
 }
 
 // Safe wrapper for retrieving Stripe sessions that handles dummy data
-export async function safeRetrieveStripeSession(sessionId: string, options?: any) {
+export async function safeRetrieveStripeSession(sessionId: string, options?: Record<string, unknown>) {
   if (isDummyStripeSession(sessionId)) {
     // For development/seeded data, return mock session
     console.warn(`Using mock Stripe session for dummy ID: ${sessionId}`);
