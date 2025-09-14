@@ -15,7 +15,7 @@ export default function AdminLayout({
 }
 function Navbar() {
   return (
-    <header className="flex justify-center items-center h-12 shadow bg-background z-10">
+    <header className="flex justify-center items-center h-16 shadow bg-background z-10">
       <nav className="flex gap-4 container">
         <div className="mr-auto flex items-center gap-2">
           <Link

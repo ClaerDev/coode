@@ -31,7 +31,7 @@ export default async function EditCoursePage({
 
   return (
     <div className="container my-6">
-      <PageHeader title={course.name} />
+      <PageHeader title={course.name} className="pt-2"/>
       <Tabs defaultValue="lessons">
         <TabsList>
           <TabsTrigger value="lessons">Lessons</TabsTrigger>
@@ -39,17 +39,17 @@ export default async function EditCoursePage({
         </TabsList>
         <TabsContent value="lessons" className="flex flex-col gap-2">
           <Card>
-            <CardHeader className="flex items-center flex-row justify-between">
-              <CardTitle>Sections</CardTitle>
+            <CardHeader className="flex items-center flex-row justify-between pt-4">
+              <CardTitle className="font-bold text-lg">Sections</CardTitle>
               <SectionFormDialog courseId={course.id}>
                 <DialogTrigger asChild>
-                  <Button variant="outline">
+                  <Button variant="outline" className="text-black font-semibold hover:bg-black hover:text-white transition-colors gap-1.5">
                     <PlusIcon /> New Section
                   </Button>
                 </DialogTrigger>
               </SectionFormDialog>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pb-4">
               <SortableSectionList
                 courseId={courseId}
                 sections={course.courseSections}
@@ -59,7 +59,7 @@ export default async function EditCoursePage({
           <hr className="my-2"></hr>
           {course.courseSections.map((section) => (
             <Card key={section.id}>
-              <CardHeader className="flex items-center flex-row justify-between gap-4">
+              <CardHeader className="flex items-center flex-row justify-between gap-4 pt-4">
                 <CardTitle
                   className={cn(
                     "flex items-center gap-2",
@@ -71,13 +71,13 @@ export default async function EditCoursePage({
                 </CardTitle>
                 <LessonFormDialog defaultSectionId={section.id} sections={course.courseSections}>
                   <DialogTrigger asChild>
-                    <Button variant="outline">
+                    <Button variant="outline" className="text-black font-semibold hover:bg-black hover:text-white transition-colors gap-1.5">
                       <PlusIcon /> New Lesson
                     </Button>
                   </DialogTrigger>
                 </LessonFormDialog>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-4">
                 <SortableLessonList
                   sections={course.courseSections}
                   lessons={section.lessons}
@@ -87,7 +87,7 @@ export default async function EditCoursePage({
           ))}
         </TabsContent>
         <TabsContent value="details">
-          <Card>
+          <Card className="p-5">
             <CardHeader>
               <CourseForm course={course} />
             </CardHeader>

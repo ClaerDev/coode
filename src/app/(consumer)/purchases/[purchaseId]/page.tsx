@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/app/services/clerk"
 import { stripeServerClient } from "@/app/services/stripe/stripeServer"
+import { isDummyStripeSession, createMockStripeSession } from "@/lib/stripeUtils"
 import { LoadingSpinner } from "@/components/LoadingSpinner"
 import { PageHeader } from "@/components/PageHeader"
 import { Badge } from "@/components/ui/badge"
@@ -134,6 +135,24 @@ async function getStripeDetails(
   pricePaidInCents: number,
   isRefunded: boolean
 ) {
+  // Handle dummy data from seeding
+  if (isDummyStripeSession(stripeSessionId)) {
+    console.warn(`Using mock Stripe data for dummy session: ${stripeSessionId}`);
+    const mockSession = createMockStripeSession(stripeSessionId, pricePaidInCents);
+    
+    // Calculate refund amount for dummy data
+    const refundAmount = isRefunded ? pricePaidInCents : undefined;
+    
+    return {
+      receiptUrl: mockSession.payment_intent.latest_charge.receipt_url,
+      pricingRows: getPricingRows(mockSession.total_details, {
+        total: pricePaidInCents - (refundAmount ?? 0),
+        subtotal: pricePaidInCents,
+        refund: refundAmount,
+      }),
+    };
+  }
+
   const { payment_intent, total_details, amount_total, amount_subtotal } =
     await stripeServerClient.checkout.sessions.retrieve(stripeSessionId, {
       expand: [

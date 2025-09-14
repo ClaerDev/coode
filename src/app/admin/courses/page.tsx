@@ -15,14 +15,15 @@ import { countDistinct, eq, asc } from "drizzle-orm";
 import { getUserCourseAccessGlobalTag } from "@/features/courses/db/cache/userCourseAccess";
 import { getCourseSectionGlobalTag } from "@/features/courseSections/db/cache";
 import { getLessonGlobalTag } from "@/features/lessons/db/cache/lessons";
+import { Plus } from "lucide-react";
 
 export default async function CoursesPage() {
   const courses = await getCourses();
   return (
     <div className="container my-6">
-      <PageHeader title="Courses">
+      <PageHeader title="Course List">
         <Button asChild>
-          <Link href="/admin/courses/new">New Courses</Link>
+          <Link href="/admin/courses/new"><Plus/> New Courses</Link>
         </Button>
       </PageHeader>
       <CourseTable courses={courses} />

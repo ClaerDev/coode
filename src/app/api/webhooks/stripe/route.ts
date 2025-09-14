@@ -4,6 +4,7 @@ import { db } from "@/drizzle/db"
 import { ProductTable, UserTable } from "@/drizzle/schema"
 import { addUserCourseAccess } from "@/features/courses/db/userCourseAccess"
 import { insertPurchase } from "@/features/purchase/db/purchases"
+import { isDummyStripeSession } from "@/lib/stripeUtils"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -12,6 +13,12 @@ import Stripe from "stripe"
 export async function GET(request: NextRequest) {
   const stripeSessionId = request.nextUrl.searchParams.get("stripeSessionId")
   if (stripeSessionId == null) redirect("/products/purchase-failure")
+
+  // Handle dummy session IDs from seeded data
+  if (isDummyStripeSession(stripeSessionId)) {
+    console.warn(`Webhook GET called with dummy session ID: ${stripeSessionId}`);
+    redirect("/products/purchase-failure")
+  }
 
   let redirectUrl: string
   try {

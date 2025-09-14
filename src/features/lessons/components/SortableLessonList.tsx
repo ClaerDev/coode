@@ -34,7 +34,7 @@ export function SortableLessonList({
           <SortableItem
             key={lesson.id}
             id={lesson.id}
-            className="flex items-center gap-1"
+            className="flex items-center gap-2"
           >
             <div
               className={cn(
@@ -52,7 +52,7 @@ export function SortableLessonList({
             </div>
             <LessonFormDialog lesson={lesson} sections={sections}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto">
+                <Button variant="outline" size="sm" className="ml-auto text-black font-semibold hover:bg-black hover:text-white transition-colors gap-1.5">
                   Edit
                 </Button>
               </DialogTrigger>

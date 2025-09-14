@@ -28,13 +28,14 @@ export function SortableSectionList({
           <SortableItem
             key={section.id}
             id={section.id}
-            className="flex items-center gap-1"
+            className="flex items-center gap-2"
           >
             <div
               className={cn(
-                "contents",
+                "contents font-semibold",
                 section.status == "private" && "text-muted-foreground"
               )}
+              
             >
               {section.status === "private" && (
                 <EyeClosedIcon className="size-4" />
@@ -43,7 +44,7 @@ export function SortableSectionList({
             </div>
             <SectionFormDialog section={section} courseId={courseId}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto">
+                <Button variant="outline" size="sm" className="ml-auto text-black font-semibold hover:bg-black hover:text-white transition-colors gap-1.5">
                   Edit
                 </Button>
               </DialogTrigger>

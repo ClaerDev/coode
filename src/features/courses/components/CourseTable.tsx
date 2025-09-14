@@ -29,19 +29,19 @@ export function CourseTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>
+          <TableHead className="font-semibold text-black text-base">
             {formatPlural(courses.length, {
               singular: "course",
               plural: "coureses",
             })}
           </TableHead>
-          <TableHead>Students</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="font-semibold text-black text-base">Students</TableHead>
+          <TableHead className="font-semibold text-black text-base">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {courses.map((course) => (
-          <TableRow key={course.id}>
+          <TableRow key={course.id} className="hover:bg-gray-100">
             <TableCell>
               <div className="flex flex-col gap-1">
                 <div className="font-semibold">{course.name}</div>

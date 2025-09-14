@@ -6,6 +6,7 @@ import { updatePurchase } from "../db/purchases"
 import { stripeServerClient } from "@/app/services/stripe/stripeServer"
 import { revokeUserCourseAccess } from "@/features/courses/db/userCourseAccess"
 import { canRefundPurchases } from "../permissions/products"
+import { isDummyStripeSession, safeCreateRefund } from "@/lib/stripeUtils"
 
 
 export async function refundPurchase(id: string) {
@@ -23,6 +24,14 @@ export async function refundPurchase(id: string) {
       trx
     )
 
+    // Check if this is dummy data from seeding
+    if (isDummyStripeSession(refundedPurchase.stripeSessionId)) {
+      console.warn(`Refunding dummy purchase: ${refundedPurchase.stripeSessionId}`);
+      // For dummy data, just revoke access without calling Stripe
+      await revokeUserCourseAccess(refundedPurchase, trx)
+      return { error: false, message: "Successfully refunded dummy purchase" }
+    }
+
     const session = await stripeServerClient.checkout.sessions.retrieve(
       refundedPurchase.stripeSessionId
     )
@@ -36,12 +45,11 @@ export async function refundPurchase(id: string) {
     }
 
     try {
-      await stripeServerClient.refunds.create({
-        payment_intent:
-          typeof session.payment_intent === "string"
-            ? session.payment_intent
-            : session.payment_intent.id,
-      })
+      const paymentIntentId = typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent.id;
+        
+      await safeCreateRefund(paymentIntentId)
       await revokeUserCourseAccess(refundedPurchase, trx)
     } catch {
       trx.rollback()

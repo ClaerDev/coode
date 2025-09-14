@@ -32,11 +32,11 @@ export function LessonFormDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {children}
-      <DialogContent>
+      <DialogContent className="overflow-y-auto max-h-[90vh]">
         <DialogHeader>
           <DialogTitle>
             {" "}
-            {lesson == null ? "New Lesson" : `Edit ${lesson.name}`}
+            {lesson == null ? "New Lesson" : `Edit: ${lesson.name}`}
           </DialogTitle>
         </DialogHeader>
         <div className="mt-4">

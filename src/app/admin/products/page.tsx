@@ -11,14 +11,15 @@ import {
 import { eq, asc, countDistinct } from "drizzle-orm";
 import { getProductGlobalTag } from "@/features/products/db/cache";
 import { ProductTable } from "@/features/products/components/ProductTable";
+import { Plus } from 'lucide-react';
 
 export default async function ProductsPage() {
   const products = await getProducts();
   return (
     <div className="container my-6">
-      <PageHeader title="Products">
+      <PageHeader title="Product List">
         <Button asChild>
-          <Link href="/admin/products/new">New Products</Link>
+          <Link href="/admin/products/new"><Plus /> New Products</Link>
         </Button>
       </PageHeader>
       <ProductTable products={products} />

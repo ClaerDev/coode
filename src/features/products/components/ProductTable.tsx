@@ -34,20 +34,20 @@ export function ProductTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>
+          <TableHead className="font-semibold text-black text-base">
             {formatPlural(products.length, {
               singular: "product",
               plural: "products",
             })}
           </TableHead>
-          <TableHead>Customers</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="font-semibold text-black text-base">Customers</TableHead>
+          <TableHead className="font-semibold text-black text-base">Status</TableHead>
+          <TableHead className="font-semibold text-black text-base">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {products.map((product) => (
-          <TableRow key={product.id}>
+          <TableRow key={product.id} className="hover:bg-gray-100">
             <TableCell>
               <div className="flex items-center gap-4">
                 <Image

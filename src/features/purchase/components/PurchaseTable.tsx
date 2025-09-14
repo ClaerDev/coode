@@ -38,21 +38,21 @@ export function PurchaseTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>
+          <TableHead className="font-semibold text-black text-base">
             {" "}
             {formatPlural(purchases.length, {
               singular: "sale",
               plural: "sales",
             })}
           </TableHead>
-          <TableHead>Customer Name</TableHead>
-          <TableHead>Amount</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="font-semibold text-black text-base">Customer Name</TableHead>
+          <TableHead className="font-semibold text-black text-base">Amount</TableHead>
+          <TableHead className="font-semibold text-black text-base">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {purchases.map((purchase) => (
-          <TableRow key={purchase.id}>
+          <TableRow key={purchase.id} className="hover:bg-gray-100">
             <TableCell>
               <div className="flex items-center gap-4">
                 <Image

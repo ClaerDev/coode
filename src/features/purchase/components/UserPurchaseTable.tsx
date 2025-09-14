@@ -35,9 +35,9 @@ export function UserPurchaseTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Product</TableHead>
-          <TableHead>Amount</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="font-semibold text-black text-base">Product</TableHead>
+          <TableHead className="font-semibold text-black text-base">Amount</TableHead>
+          <TableHead className="font-semibold text-black text-base">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
