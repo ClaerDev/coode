@@ -32,7 +32,7 @@ export async function insertSection(
 
 export async function updateSection(
   id: string,
-  data: typeof CourseSectionTable.$inferInsert
+  data: Partial<typeof CourseSectionTable.$inferInsert>
 ) {
   const [updatedSection] = await db
     .update(CourseSectionTable)

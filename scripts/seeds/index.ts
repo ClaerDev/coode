@@ -128,17 +128,23 @@ Examples:
 
   const coursesCountArg = args.find(arg => arg.startsWith('--courses-count='));
   if (coursesCountArg) {
-    const count = parseInt(coursesCountArg.split('=')[1]);
-    if (!isNaN(count) && count > 0) {
-      options.courses = { count };
+    const countValue = coursesCountArg.split('=')[1];
+    if (countValue) {
+      const count = parseInt(countValue);
+      if (!isNaN(count) && count > 0) {
+        options.courses = { count };
+      }
     }
   }
 
   const productsCountArg = args.find(arg => arg.startsWith('--products-count='));
   if (productsCountArg) {
-    const count = parseInt(productsCountArg.split('=')[1]);
-    if (!isNaN(count) && count > 0) {
-      options.products = { count };
+    const countValue = productsCountArg.split('=')[1];
+    if (countValue) {
+      const count = parseInt(countValue);
+      if (!isNaN(count) && count > 0) {
+        options.products = { count };
+      }
     }
   }
 

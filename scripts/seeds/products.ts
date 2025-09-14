@@ -98,10 +98,16 @@ export async function seedProducts(courses: any[], count: number = 15) {
   
   // Create course-product relationships (each course gets paired with corresponding product)
   console.log('🔗 Creating course-product relationships...');
-  const courseProductData = courses.map((course, index) => ({
-    courseId: course.id,
-    productId: insertedProducts[index].id
-  }));
+  const courseProductData = courses
+    .map((course, index) => {
+      const product = insertedProducts[index];
+      if (!product) return null;
+      return {
+        courseId: course.id,
+        productId: product.id
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
   
   await db.insert(CourseProductTable).values(courseProductData);
   console.log(`✅ Created ${courseProductData.length} course-product relationships`);

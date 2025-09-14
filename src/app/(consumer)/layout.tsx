@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from 'next/image'
 import { Suspense } from "react";
 import { getCurrentUser } from "../services/clerk";
 import { canAccessAdminPages } from "@/permissions/general";
@@ -24,7 +25,7 @@ function Navbar() {
           className="mr-auto text-lg hover:underline flex items-center px-2"
           href="/"
         >
-          <img src="/images/logo.png" alt="Coode Logo" width={45} height={45} />
+          <Image src="/images/logo.png" alt="Coode Logo" width={45} height={45} />
           <span className="text-2xl font-semibold pl-0.5">Coode</span>
         </Link>
         <Suspense>

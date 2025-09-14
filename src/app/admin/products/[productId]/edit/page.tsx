@@ -1,6 +1,6 @@
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { eq, asc } from "drizzle-orm";
-import { CourseTable, ProductTable } from "@/drizzle/schema";
+import { CourseTable, ProductTable, ProductTag } from "@/drizzle/schema";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
 import { getCourseGlobalTag } from "@/features/courses/db/cache/courses";
@@ -25,7 +25,7 @@ export default async function EditProductPage({
         product={{
           ...product,
           courseIds: product.courseProducts.map((c) => c.courseId),
-          tags: product.tags as any,
+          tags: product.tags as ProductTag[],
         }}
         courses={await getCourses()}
       />

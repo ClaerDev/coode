@@ -13,7 +13,6 @@ import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { deleteCourse } from "../actions/course";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function CourseTable({
   courses,
 }: {

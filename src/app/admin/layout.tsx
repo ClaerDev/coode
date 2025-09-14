@@ -1,5 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from 'next/image'
 import { Badge } from "@/components/ui/badge";
 
 export default function AdminLayout({
@@ -22,7 +23,7 @@ function Navbar() {
             className="mr-auto text-lg hover:underline flex items-center px-2"
             href="/"
           >
-            <img
+            <Image
               src="/images/logo.png"
               alt="Coode Logo"
               width={45}
