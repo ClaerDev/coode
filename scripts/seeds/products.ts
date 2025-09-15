@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { db } from '../../src/drizzle/db';
-import { ProductTable, CourseProductTable, productTags } from '../../src/drizzle/schema';
+import { ProductTable, CourseProductTable, CourseTable, productTags } from '../../src/drizzle/schema';
 
 const COURSE_CATEGORIES = [
   'Web Development',
@@ -88,7 +88,7 @@ Perfect for professionals, students, and anyone looking to advance their career 
   return products;
 }
 
-export async function seedProducts(courses: any[], count: number = 15) {
+export async function seedProducts(courses: (typeof CourseTable.$inferSelect)[], count: number = 15) {
   console.log('🛍️  Generating products...');
   
   const productData = await generateProductData(count);

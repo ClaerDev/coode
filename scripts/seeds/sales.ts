@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { db } from '../../src/drizzle/db';
-import { UserTable, PurchaseTable } from '../../src/drizzle/schema';
+import { UserTable, PurchaseTable, ProductTable } from '../../src/drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 // Generate dummy users for purchases
@@ -67,7 +67,7 @@ async function getAllUsers() {
   });
 }
 
-async function generateSalesData(users: any[], products: any[], options: {
+async function generateSalesData(users: (typeof UserTable.$inferSelect)[], products: (typeof ProductTable.$inferSelect)[], options: {
   historicalCount?: number;
   recentSpikeCount?: number;
   refundRate?: number;
@@ -152,7 +152,7 @@ async function generateSalesData(users: any[], products: any[], options: {
   return purchases;
 }
 
-export async function seedSales(products: any[], options: {
+export async function seedSales(products: (typeof ProductTable.$inferSelect)[], options: {
   historicalCount?: number;
   recentSpikeCount?: number;
   refundRate?: number;

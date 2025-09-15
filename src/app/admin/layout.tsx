@@ -20,7 +20,7 @@ function Navbar() {
       <nav className="flex gap-4 container">
         <div className="mr-auto flex items-center gap-2">
           <Link
-            className="mr-auto text-lg hover:underline flex items-center px-2"
+            className="mr-auto text-lg hover:underline flex items-center"
             href="/"
           >
             <Image

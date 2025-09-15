@@ -4,6 +4,7 @@ import 'dotenv/config';
 import { seedCourses } from './courses';
 import { seedProducts } from './products';
 import { seedSales } from './sales';
+import type { CourseTable, ProductTable } from '../../src/drizzle/schema';
 
 interface SeedOptions {
   courses?: {
@@ -29,8 +30,8 @@ export async function seedAll(options: SeedOptions = {}) {
   const startTime = Date.now();
   
   try {
-    let courses: any[] = [];
-    let products: any[] = [];
+    let courses: (typeof CourseTable.$inferSelect)[] = [];
+    let products: (typeof ProductTable.$inferSelect)[] = [];
     
     if (!options.skipCourses) {
       console.log('\n📚 === SEEDING COURSES ===');

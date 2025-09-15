@@ -22,7 +22,7 @@ function Navbar() {
     <header className="flex h-16 shadow bg-background z-10">
       <nav className="flex gap-4 container">
         <Link
-          className="mr-auto text-lg hover:underline flex items-center px-2"
+          className="mr-auto text-lg hover:underline flex items-center"
           href="/"
         >
           <Image src="/images/logo.png" alt="Coode Logo" width={45} height={45} />
