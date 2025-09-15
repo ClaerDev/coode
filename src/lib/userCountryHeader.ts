@@ -1,6 +1,8 @@
 import { pppCoupons } from "@/data/pppCoupons";
 import { headers } from "next/headers";
 
+export const dynamic = 'force-dynamic'
+
 const COUNTRY_HEADER_KEY = "x-user-country";
 
 export function setUserCountryHeader(

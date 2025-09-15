@@ -6,6 +6,8 @@ import { ProductForm } from "@/features/products/components/ProductForm";
 import { asc } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewProductPage() {
   return (
     <div className="container my-6">

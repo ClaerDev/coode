@@ -1,13 +1,11 @@
-import {
-  deleteUser,
-  insertUser,
-  updateUser,
-} from "@/features/users/db/users";
+import { deleteUser, insertUser, updateUser } from "@/features/users/db/users";
 import { syncClerkUserMetadata } from "@/app/services/clerk";
 import { env } from "@/data/env/server";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const headerPayload = await headers();
