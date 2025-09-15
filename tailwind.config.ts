@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import containerQueries from "@tailwindcss/container-queries";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   content: [
@@ -9,15 +10,14 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        DEFAULT: "100%",
-        sm: "1500px",
-      },
-    },
     extend: {
+      container: {
+        center: true,
+        padding: "2rem",
+        screens: {
+          "2xl": "1400px",
+        },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -25,5 +25,5 @@ export default {
       // You can extend other theme values here
     },
   },
-  plugins: [require("tailwindcss-animate"), containerQueries],
+  plugins: [tailwindcssAnimate, containerQueries],
 } satisfies Config;

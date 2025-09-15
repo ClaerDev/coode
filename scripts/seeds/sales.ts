@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { db } from '../../src/drizzle/db';
-import { UserTable, PurchaseTable, ProductTable } from '../../src/drizzle/schema';
+import { UserTable, PurchaseTable } from '../../src/drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 type ProductForSales = {
@@ -17,7 +17,6 @@ type UserForSales = {
   email: string;
 };
 
-// Generate dummy users for purchases
 const DUMMY_USERS = [
   { name: 'John Smith', email: 'john.smith@example.com' },
   { name: 'Sarah Johnson', email: 'sarah.johnson@example.com' },
@@ -45,7 +44,6 @@ async function createDummyUsers() {
   const users = [];
   
   for (const user of DUMMY_USERS) {
-    // Check if user already exists
     const existingUser = await db.query.UserTable.findFirst({
       where: eq(UserTable.email, user.email)
     });
@@ -97,22 +95,18 @@ async function generateSalesData(users: UserForSales[], products: ProductForSale
   const purchases = [];
   const now = new Date();
   
-  // Generate historical purchases over the last 6 months
   for (let i = 0; i < historicalCount; i++) {
     const user = faker.helpers.arrayElement(users);
     const product = faker.helpers.arrayElement(products);
     
-    // Generate purchase date within last 6 months, with more recent purchases being more likely
     const daysAgo = faker.number.int({ min: 1, max: 180 });
     const purchaseDate = faker.date.recent({ days: daysAgo });
     
-    // Apply some discounts randomly
     const hasDiscount = faker.datatype.boolean({ probability: discountRate });
     const discountPercent = hasDiscount ? faker.number.float({ min: 0.1, max: 0.3 }) : 0;
     const originalPriceCents = product.priceInDollars * 100;
     const finalPriceCents = Math.round(originalPriceCents * (1 - discountPercent));
     
-    // Some purchases might be refunded
     const isRefunded = faker.datatype.boolean({ probability: refundRate });
     const refundedAt = isRefunded 
       ? faker.date.between({ from: purchaseDate, to: now })
@@ -139,10 +133,8 @@ async function generateSalesData(users: UserForSales[], products: ProductForSale
     const user = faker.helpers.arrayElement(users);
     const product = faker.helpers.arrayElement(products);
     
-    // Recent purchases (last 7 days)
     const purchaseDate = faker.date.recent({ days: 7 });
     
-    // Promotion pricing - bigger discounts for the spike
     const discountPercent = faker.number.float({ min: 0.2, max: 0.5 }); // 20-50% off
     const originalPriceCents = product.priceInDollars * 100;
     const finalPriceCents = Math.round(originalPriceCents * (1 - discountPercent));
@@ -174,7 +166,6 @@ export async function seedSales(products: ProductForSales[], options: {
 } = {}) {
   console.log('💰 Starting sales data seeding...');
   
-  // Create dummy users if they don't exist
   console.log('👥 Creating dummy users...');
   await createDummyUsers();
   
@@ -211,7 +202,6 @@ export async function seedSales(products: ProductForSales[], options: {
   console.log('📈 Generating sales data...');
   const allPurchases = await generateSalesData(users, products, options);
   
-  // Insert purchases in batches to avoid overwhelming the database
   console.log(`💾 Inserting ${allPurchases.length} purchases...`);
   const batchSize = 50;
   let insertedCount = 0;
@@ -223,7 +213,6 @@ export async function seedSales(products: ProductForSales[], options: {
     console.log(`  ✅ Inserted ${insertedCount}/${allPurchases.length} purchases`);
   }
   
-  // Calculate and display statistics
   const refundedCount = allPurchases.filter(p => p.refundedAt).length;
   const totalRevenue = allPurchases
     .filter(p => !p.refundedAt)
