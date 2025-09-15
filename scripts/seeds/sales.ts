@@ -3,6 +3,20 @@ import { db } from '../../src/drizzle/db';
 import { UserTable, PurchaseTable, ProductTable } from '../../src/drizzle/schema';
 import { eq } from 'drizzle-orm';
 
+type ProductForSales = {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  priceInDollars: number;
+};
+
+type UserForSales = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 // Generate dummy users for purchases
 const DUMMY_USERS = [
   { name: 'John Smith', email: 'john.smith@example.com' },
@@ -67,7 +81,7 @@ async function getAllUsers() {
   });
 }
 
-async function generateSalesData(users: (typeof UserTable.$inferSelect)[], products: (typeof ProductTable.$inferSelect)[], options: {
+async function generateSalesData(users: UserForSales[], products: ProductForSales[], options: {
   historicalCount?: number;
   recentSpikeCount?: number;
   refundRate?: number;
@@ -152,7 +166,7 @@ async function generateSalesData(users: (typeof UserTable.$inferSelect)[], produ
   return purchases;
 }
 
-export async function seedSales(products: (typeof ProductTable.$inferSelect)[], options: {
+export async function seedSales(products: ProductForSales[], options: {
   historicalCount?: number;
   recentSpikeCount?: number;
   refundRate?: number;
